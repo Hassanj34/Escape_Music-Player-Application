@@ -6,6 +6,7 @@ import Slider from "@react-native-community/slider";
 import color from "../misc/color";
 import PlayerButton from "../components/PlayerButton";
 import { AudioContext } from "../context/AudioProvider";
+import { pause, play, resume } from "../misc/audioController";
 
 const { width } = Dimensions.get("window");
 
@@ -18,6 +19,38 @@ const Player = () => {
       return playbackPosition / playbackDuration;
     }
     return 0;
+  };
+
+  const handlePlayPause = async () => {
+    //play
+    if (context.soundObj === null) {
+      const audio = context.currentAudio;
+      const status = await play(context.playbackObj, audio.uri);
+      context.updateState(context, {
+        soundObj: status,
+        currentAudio: audio,
+        isPlaying: true,
+        currentAudioIndex: context.currentAudioIndex,
+      });
+    }
+
+    //pause
+    if (context.soundObj && context.soundObj.isPlaying) {
+      const status = await pause(context.playbackObj);
+      context.updateState(context, {
+        soundObj: status,
+        isPlaying: false,
+      });
+    }
+
+    //resume
+    if (context.soundObj && !context.soundObj.isPlaying) {
+      const status = await resume(context.playbackObj);
+      context.updateState(context, {
+        soundObj: status,
+        isPlaying: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -53,7 +86,7 @@ const Player = () => {
         <View style={styles.audioControllers}>
           <PlayerButton iconType="PREVIOUS" />
           <PlayerButton
-            onPress={() => console.log("playing")}
+            onPress={handlePlayPause}
             style={{ marginHorizontal: 15 }}
             iconType={context.isPlaying ? "PLAY" : "PAUSE"}
           />

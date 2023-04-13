@@ -8,9 +8,9 @@ const PlayerButton = (props) => {
   const { iconType, size = 40, iconColor = color.FONT, onPress } = props;
   const getIconName = (type) => {
     switch (type) {
-      case "PLAY":
-        return "md-play-circle-outline"; //related to play
       case "PAUSE":
+        return "md-play-circle-outline"; //related to play
+      case "PLAY":
         return "pause-circle-outline"; //related to pause
       case "NEXT":
         return "play-skip-forward-outline"; //related to next
