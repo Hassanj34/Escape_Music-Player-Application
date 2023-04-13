@@ -109,9 +109,8 @@ export class AudioList extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       });
+      return storeAudioForNextOpening(audio, index);
     }
-    return storeAudioForNextOpening(audio, index);
-    console.log("isPlaying: " + isPlaying);
   };
 
   componentDidMount() {

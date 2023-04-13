@@ -1,8 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./src/navigation/AppNavigator";
 import AudioProvider from "./src/context/AudioProvider";
+
+LogBox.ignoreLogs(["Property 'index' doesn't exist"]);
 
 export default function App() {
   return (
