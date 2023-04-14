@@ -29,40 +29,40 @@ export class AudioList extends Component {
     }
   );
 
-  onPlaybackStatusUpdate = async (playbackStatus) => {
-    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
-      this.context.updateState(this.context, {
-        playbackPosition: playbackStatus.positionMillis,
-        playbackDuration: playbackStatus.durationMillis,
-      });
-    }
-    if (playbackStatus.didJustFinish) {
-      const nextAudioIndex = this.context.currentAudioIndex + 1;
-      //there is no next audio to play or the current audio is the last
-      if (nextAudioIndex >= this.context.totalAudioCount) {
-        this.context.playbackObj.unloadAsync();
-        this.context.updateState(this.context, {
-          soundObj: null,
-          currentAudio: this.context.audioFiles[0],
-          isPlaying: false,
-          currentAudioIndex: 0,
-          playbackPosition: null,
-          playbackDuration: null,
-        });
-        return await storeAudioForNextOpening(this.context.audioFiles[0], 0);
-      }
-      //other wise select next audio
-      const audio = this.context.audioFiles[nextAudioIndex];
-      const status = await playNext(this.context.playbackObj, audio.uri);
-      this.context.updateState(this.context, {
-        soundObj: status,
-        currentAudio: audio,
-        isPlaying: true,
-        currentAudioIndex: nextAudioIndex,
-      });
-      await storeAudioForNextOpening(audio, nextAudioIndex);
-    }
-  };
+  // onPlaybackStatusUpdate = async (playbackStatus) => {
+  //   if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+  //     this.context.updateState(this.context, {
+  //       playbackPosition: playbackStatus.positionMillis,
+  //       playbackDuration: playbackStatus.durationMillis,
+  //     });
+  //   }
+  //   if (playbackStatus.didJustFinish) {
+  //     const nextAudioIndex = this.context.currentAudioIndex + 1;
+  //     //there is no next audio to play or the current audio is the last
+  //     if (nextAudioIndex >= this.context.totalAudioCount) {
+  //       this.context.playbackObj.unloadAsync();
+  //       this.context.updateState(this.context, {
+  //         soundObj: null,
+  //         currentAudio: this.context.audioFiles[0],
+  //         isPlaying: false,
+  //         currentAudioIndex: 0,
+  //         playbackPosition: null,
+  //         playbackDuration: null,
+  //       });
+  //       return await storeAudioForNextOpening(this.context.audioFiles[0], 0);
+  //     }
+  //     //other wise select next audio
+  //     const audio = this.context.audioFiles[nextAudioIndex];
+  //     const status = await playNext(this.context.playbackObj, audio.uri);
+  //     this.context.updateState(this.context, {
+  //       soundObj: status,
+  //       currentAudio: audio,
+  //       isPlaying: true,
+  //       currentAudioIndex: nextAudioIndex,
+  //     });
+  //     await storeAudioForNextOpening(audio, nextAudioIndex);
+  //   }
+  // };
 
   handleAudioPress = async (audio) => {
     const { soundObj, playbackObj, currentAudio, updateState, audioFiles } =
@@ -79,7 +79,9 @@ export class AudioList extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       });
-      playbackObj.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
+      playbackObj.setOnPlaybackStatusUpdate(
+        this.context.onPlaybackStatusUpdate
+      );
       return storeAudioForNextOpening(audio, index);
     }
 
@@ -148,7 +150,9 @@ export class AudioList extends Component {
               ></RecyclerListView>
               <OptionModel
                 onPlayPress={() => console.log("playing audio")}
-                onPlaylistPress={() => console.log("adding to playlist")}
+                onPlaylistPress={() => {
+                  this.props.navigation.navigate("Playlist");
+                }}
                 currentItem={this.currentItem}
                 onClose={() =>
                   this.setState({ ...this.state, optionModelVisible: false })
