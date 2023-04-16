@@ -9,8 +9,12 @@ import {
 import React from "react";
 import color from "../misc/color";
 import AudioListItem from "./AudioListItem";
+import { selectAudio } from "../misc/audioController";
 
 const PLayListDetail = ({ visible, playList, onClose }) => {
+  const playAudio = (audio) => {
+    selectAudio(audio);
+  };
   return (
     <Modal
       visible={visible}
@@ -26,7 +30,11 @@ const PLayListDetail = ({ visible, playList, onClose }) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={{ marginBottom: 10 }}>
-              <AudioListItem title={item.filename} duration={item.duration} />
+              <AudioListItem
+                title={item.filename}
+                duration={item.duration}
+                onAudioPress={() => playAudio(item)}
+              />
             </View>
           )}
         />

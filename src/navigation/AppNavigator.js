@@ -4,16 +4,27 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { createStackNavigator } from "@react-navigation/stack";
 import AudioList from "../screens/AudioList";
 import Player from "../screens/Player";
 import Playlist from "../screens/Playlist";
+import PLayListDetail from "../screens/PlayListDetail";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+const PlayListScreen = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="PlayList" component={Playlist} />
+      <Stack.Screen name="PlayListDetail" component={PLayListDetail} />
+    </Stack.Navigator>
+  );
+};
 
 const AppNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="AudioList"
         component={AudioList}
@@ -34,7 +45,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Playlist"
-        component={Playlist}
+        component={PlayListScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="library-music" size={size} color={color} />

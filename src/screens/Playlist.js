@@ -17,7 +17,7 @@ import PLayListDetail from "../components/PlayListDetail";
 
 let selectedPlayList = {};
 
-const Playlist = () => {
+const Playlist = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showPlayList, setShowPlayList] = useState(false);
   const context = useContext(AudioContext);
@@ -111,11 +111,17 @@ const Playlist = () => {
 
     //if no audio selected, open playlist
     selectedPlayList = playList;
-    setShowPlayList(true);
+    // setShowPlayList(true);
+    navigation.navigate("PlayListDetail", playList);
   };
 
   return (
     <>
+      {playList.length === 1 ? (
+        <Text style={styles.header}>Playlist</Text>
+      ) : (
+        <Text style={styles.header}>Playlists</Text>
+      )}
       <ScrollView contentContainerStyle={styles.container}>
         {playList.length
           ? playList.map((item) => (
@@ -170,13 +176,21 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     fontSize: 14,
   },
-  
+
   playListButton: {
     color: color.ACTIVE_BG,
     letterSpacing: 1,
     fontWeight: "bold",
     fontSize: 14,
     padding: 5,
+  },
+  header: {
+    textAlign: "center",
+    fontSize: 23,
+    fontWeight: "bold",
+    paddingTop: 30,
+    paddingBottom: 5,
+    color: color.ACTIVE_BG,
   },
 });
 

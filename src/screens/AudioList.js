@@ -6,8 +6,15 @@ import { Audio } from "expo-av";
 import AudioListItem from "../components/AudioListItem";
 import OptionModel from "../components/OptionModel";
 import { AudioContext } from "../context/AudioProvider";
-import { pause, play, playNext, resume } from "../misc/audioController";
+import {
+  pause,
+  play,
+  playNext,
+  resume,
+  selectAudio,
+} from "../misc/audioController";
 import { storeAudioForNextOpening } from "../misc/helper";
+import color from "../misc/color";
 
 export class AudioList extends Component {
   static contextType = AudioContext;
@@ -30,54 +37,7 @@ export class AudioList extends Component {
   );
 
   handleAudioPress = async (audio) => {
-    const { soundObj, playbackObj, currentAudio, updateState, audioFiles } =
-      this.context;
-    //playing audio for first time
-    if (soundObj === null) {
-      const playbackObj = new Audio.Sound();
-      const status = await play(playbackObj, audio.uri);
-      const index = audioFiles.indexOf(audio);
-      updateState(this.context, {
-        currentAudio: audio,
-        playbackObj: playbackObj,
-        soundObj: status,
-        isPlaying: true,
-        currentAudioIndex: index,
-      });
-      playbackObj.setOnPlaybackStatusUpdate(
-        this.context.onPlaybackStatusUpdate
-      );
-      return storeAudioForNextOpening(audio, index);
-    }
-
-    //pause audio
-    if (soundObj.isLoaded && soundObj.isPlaying) {
-      const status = await pause(playbackObj);
-      return updateState(this.context, { soundObj: status, isPlaying: false });
-    }
-
-    //resume audio
-    if (
-      soundObj.isLoaded &&
-      !soundObj.isPlaying &&
-      currentAudio.id === audio.id
-    ) {
-      const status = await resume(playbackObj);
-      return updateState(this.context, { soundObj: status, isPlaying: true });
-    }
-
-    //select another audio
-    if (soundObj.isLoaded && currentAudio.id !== audio.id) {
-      const status = await playNext(playbackObj, audio.uri);
-      const index = audioFiles.indexOf(audio);
-      updateState(this.context, {
-        currentAudio: audio,
-        soundObj: status,
-        isPlaying: true,
-        currentAudioIndex: index,
-      });
-      return storeAudioForNextOpening(audio, index);
-    }
+    await selectAudio(audio, this.context);
   };
 
   componentDidMount() {
@@ -107,6 +67,7 @@ export class AudioList extends Component {
           if (!dataProvider._data.length) return null;
           return (
             <View style={{ flex: 1, marginBottom: 20, marginTop: 20 }}>
+              <Text style={styles.header}>Device Audios</Text>
               <RecyclerListView
                 dataProvider={dataProvider}
                 layoutProvider={this.layoutProvider}
@@ -136,10 +97,13 @@ export class AudioList extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  header: {
+    textAlign: "center",
+    fontSize: 23,
+    fontWeight: "bold",
+    paddingTop: 20,
+    paddingBottom: 30,
+    color: color.ACTIVE_BG,
   },
 });
 
