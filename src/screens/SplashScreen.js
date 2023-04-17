@@ -8,7 +8,7 @@ const SplashScreen = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("AppNavigator", { screen: "AudioList" });
+      navigation.navigate("LoginScreen");
     }, 2500); // delay for 3 seconds
   }, []);
 

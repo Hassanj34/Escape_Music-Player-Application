@@ -9,6 +9,7 @@ import AudioList from "../screens/AudioList";
 import Player from "../screens/Player";
 import Playlist from "../screens/Playlist";
 import PLayListDetail from "../screens/PlayListDetail";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,6 +50,15 @@ const AppNavigator = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="library-music" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person" size={size} color={color} />
           ),
         }}
       />
