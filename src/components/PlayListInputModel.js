@@ -41,13 +41,9 @@ const PlayListInputModel = ({ visible, onClose, onSubmit }) => {
               onChangeText={(text) => setPLayListName(text)}
               style={styles.input}
             />
-            <AntDesign
-              name="check"
-              size={24}
-              color={color.ACTIVE_FONT}
-              style={styles.submitIcon}
-              onPress={handleOnSubmit}
-            />
+            <TouchableOpacity onPress={handleOnSubmit}>
+              <Text style={styles.submitButton}>Create</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -84,11 +80,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 5,
   },
-  submitIcon: {
+  submitButton: {
     padding: 10,
     backgroundColor: color.ACTIVE_BG,
-    borderRadius: 50,
+    borderRadius: 10,
     marginTop: 15,
+    color: color.ACTIVE_FONT,
+    fontSize: 18,
+    width: 100,
+    textAlign: "center",
   },
   modalBG: {
     flex: 1,

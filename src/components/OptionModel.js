@@ -9,7 +9,14 @@ import {
 import React from "react";
 import color from "../misc/color";
 
-const OptionModel = ({ visible, onClose, currentItem, onPlayPress, onPlaylistPress }) => {
+const OptionModel = ({
+  visible,
+  onClose,
+  currentItem,
+  onPlayPress,
+  onPlaylistPress,
+  options,
+}) => {
   const { filename } = currentItem;
   return (
     <>
@@ -20,12 +27,22 @@ const OptionModel = ({ visible, onClose, currentItem, onPlayPress, onPlaylistPre
             {filename}
           </Text>
           <View style={styles.optionContainer}>
-            <TouchableWithoutFeedback onPress={onPlayPress}>
+            {options.map((optn) => {
+              return (
+                <TouchableWithoutFeedback
+                  key={optn.title}
+                  onPress={optn.onPress}
+                >
+                  <Text style={styles.option}>{optn.title}</Text>
+                </TouchableWithoutFeedback>
+              );
+            })}
+            {/* <TouchableWithoutFeedback onPress={onPlayPress}>
               <Text style={styles.option}>Play</Text>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPlaylistPress}>
               <Text style={styles.option}>Add to playlist</Text>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
           </View>
         </View>
         <TouchableWithoutFeedback onPress={onClose}>

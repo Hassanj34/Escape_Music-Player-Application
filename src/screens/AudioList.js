@@ -60,6 +60,13 @@ export class AudioList extends Component {
     );
   };
 
+  navigateToPlaylist = () => {
+    this.context.updateState.bind(this.context)({
+      addToPlayList: this.currentItem,
+    });
+    this.props.navigation.navigate("Playlist");
+  };
+
   render() {
     return (
       <AudioContext.Consumer>
@@ -75,13 +82,12 @@ export class AudioList extends Component {
                 extendedState={{ isPlaying }}
               ></RecyclerListView>
               <OptionModel
-                onPlayPress={() => console.log("playing audio")}
-                onPlaylistPress={() => {
-                  this.context.updateState.bind(this.context)({
-                    addToPlayList: this.currentItem,
-                  });
-                  this.props.navigation.navigate("Playlist");
-                }}
+                options={[
+                  {
+                    title: "Add to playlist",
+                    onPress: this.navigateToPlaylist,
+                  },
+                ]}
                 currentItem={this.currentItem}
                 onClose={() =>
                   this.setState({ ...this.state, optionModelVisible: false })

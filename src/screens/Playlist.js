@@ -122,6 +122,9 @@ const Playlist = ({ navigation }) => {
       ) : (
         <Text style={styles.header}>Playlists</Text>
       )}
+      {playList.length === 0 ? (
+        <Text style={styles.noPlaylist}>No Playlists</Text>
+      ) : null}
       <ScrollView contentContainerStyle={styles.container}>
         {playList.length
           ? playList.map((item) => (
@@ -191,6 +194,14 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 5,
     color: color.ACTIVE_BG,
+  },
+  noPlaylist: {
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    paddingTop: 30,
+    paddingBottom: 5,
+    color: color.FONT_LIGHT,
   },
 });
 
