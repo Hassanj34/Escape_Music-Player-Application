@@ -8,13 +8,15 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { BackHandler } from "react-native";
+
 import {
   auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
 } from "../../firebase";
-import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -23,12 +25,25 @@ const LoginScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         navigation.replace("AppNavigator", { screen: "AudioList" });
       }
     });
-
     return unsubscribe;
   }, []);
 
