@@ -5,6 +5,7 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import AppNavigator from "./src/navigation/AppNavigator";
 import AudioProvider from "./src/context/AudioProvider";
 import color from "./src/misc/color";
+import AppStack from "./src/screens/AppStack";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -18,7 +19,7 @@ export default function App() {
   return (
     <AudioProvider>
       <NavigationContainer theme={MyTheme}>
-        <AppNavigator />
+        <AppStack />
       </NavigationContainer>
     </AudioProvider>
   );
