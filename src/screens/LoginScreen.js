@@ -24,19 +24,19 @@ const LoginScreen = () => {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const backAction = () => {
-      BackHandler.exitApp();
-      return true;
-    };
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     BackHandler.exitApp();
+  //     return true;
+  //   };
 
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -46,17 +46,6 @@ const LoginScreen = () => {
     });
     return unsubscribe;
   }, []);
-
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("Registered with " + user.email);
-      })
-      .catch((error) => {
-        Alert.alert("Error", error.message);
-      });
-  };
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -71,6 +60,11 @@ const LoginScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View style={{ flexDirection: "row" }}>
+        <Text style={styles.header1}>Login </Text>
+        <Text style={styles.header2}>or Register</Text>
+      </View>
+
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
@@ -95,7 +89,7 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={() => navigation.navigate("SignupScreen")}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
@@ -106,6 +100,18 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  header1: {
+    fontSize: 30,
+    paddingBottom: 50,
+    fontWeight: "600",
+    color: "#0782F9",
+  },
+  header2: {
+    fontSize: 30,
+    paddingBottom: 50,
+    fontWeight: "600",
+    color: "grey",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
