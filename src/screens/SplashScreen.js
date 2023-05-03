@@ -2,28 +2,34 @@ import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Font from "expo-font";
 
 const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+      });
+    };
+
+    loadFonts();
+
     setTimeout(() => {
       navigation.navigate("LoginScreen");
     }, 2500); // delay for 3 seconds
   }, []);
 
   return (
-    <LinearGradient
-      colors={["#54c5f8", "#87e36f", "#fdd977"]}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Image
         style={styles.image}
         resizeMode="cover"
-        source={require("../../assets/icons8-headphones-64.png")}
+        source={require("../../assets/app-logo.png")}
       />
-      <Text style={styles.text}>Music Player</Text>
-    </LinearGradient>
+      <Text style={styles.text}>Escape</Text>
+    </View>
   );
 };
 
@@ -34,16 +40,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "black",
   },
   text: {
     fontSize: 34,
-    color: "#19829A",
-    marginBottom: 20,
-    paddingTop: 200,
+    color: "white",
+    position: "absolute",
+    bottom: 50,
+    fontFamily: "Lexend-Regular",
   },
   image: {
-    height: height - 700,
-    width: width - 250,
+    height: height - 600,
+    width: width - 150,
   },
 });
 

@@ -6,8 +6,12 @@ import {
   Alert,
   KeyboardAvoidingView,
   TextInput,
+  Image,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import * as Font from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { doc, setDoc } from "firebase/firestore";
@@ -58,6 +62,14 @@ const SignupScreen = () => {
   };
 
   useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+      });
+    };
+
+    loadFonts();
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         navigation.replace("AppNavigator", { screen: "AudioList" });
@@ -72,87 +84,110 @@ const SignupScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Text style={styles.header}>Create Account</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="First name"
-          value={firstName}
-          onChangeText={(text) => {
-            setFirstName(text);
-          }}
-          style={styles.input}
+    <LinearGradient
+      colors={["#4f4f4f", "#1d1d1d", "#040404"]}
+      style={styles.container}
+    >
+      <KeyboardAvoidingView
+        style={{
+          height: "100%",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        behavior="padding"
+      >
+        <Image
+          style={styles.image}
+          resizeMode="cover"
+          source={require("../../assets/app-logo.png")}
         />
-        <TextInput
-          placeholder="Last name"
-          value={lastName}
-          onChangeText={(text) => {
-            setLastName(text);
-          }}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={(text) => {
-            setEmail(text);
-          }}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={(text) => {
-            setPassword(text);
-          }}
-          style={styles.input}
-          secureTextEntry
-        />
-        <TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <Text style={styles.labelText}>First Name</Text>
           <TextInput
-            placeholder="Date of Birth"
-            value={date.toDateString()}
+            value={firstName}
+            onChangeText={(text) => {
+              setFirstName(text);
+            }}
             style={styles.input}
-            onPressIn={() => setDatePicker(true)}
           />
-        </TouchableOpacity>
-        {datePicker ? (
-          <DateTimePicker
-            value={date}
-            mode={"date"}
-            display={"default"}
-            is24Hour={false}
-            onChange={onDateSelected}
+          <Text style={styles.labelText}>Last Name</Text>
+          <TextInput
+            value={lastName}
+            onChangeText={(text) => {
+              setLastName(text);
+            }}
+            style={styles.input}
           />
-        ) : null}
-        <TextInput
-          placeholder="Gender"
-          value={gender}
-          onChangeText={(text) => {
-            setGender(text);
-          }}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Address"
-          value={address}
-          onChangeText={(text) => {
-            setAddress(text);
-          }}
-          style={styles.input}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Create</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          <Text style={styles.labelText}>Email</Text>
+          <TextInput
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+            }}
+            style={styles.input}
+          />
+          <Text style={styles.labelText}>Password</Text>
+          <TextInput
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+            }}
+            style={styles.input}
+            secureTextEntry
+          />
+          <Text style={styles.labelText}>Date of Birth</Text>
+          <TouchableOpacity>
+            <TextInput
+              value={date.toDateString()}
+              style={styles.input}
+              onPressIn={() => setDatePicker(true)}
+            />
+          </TouchableOpacity>
+          {datePicker ? (
+            <DateTimePicker
+              value={date}
+              mode={"date"}
+              display={"default"}
+              is24Hour={false}
+              onChange={onDateSelected}
+            />
+          ) : null}
+          <Text style={styles.labelText}>Gender</Text>
+          <TextInput
+            value={gender}
+            onChangeText={(text) => {
+              setGender(text);
+            }}
+            style={styles.input}
+          />
+          <Text style={styles.labelText}>Address</Text>
+          <TextInput
+            value={address}
+            onChangeText={(text) => {
+              setAddress(text);
+            }}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={handleSignUp} style={{ width: "100%" }}>
+            <LinearGradient
+              colors={["#b80a43", "#5d2379", "#312f94"]}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Sign up</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 };
+
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   header: {
@@ -167,27 +202,35 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
-    width: "80%",
+    width: "85%",
   },
   input: {
     backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     marginTop: 5,
+    backgroundColor: "#cdcdcd",
+  },
+  labelText: {
+    fontFamily: "Lexend-Regular",
+    color: "white",
+    fontSize: 17,
+    paddingBottom: 2,
+    paddingTop: 7,
   },
   buttonContainer: {
-    width: "60%",
+    width: "75%",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
   },
   button: {
-    backgroundColor: "#0782F9",
     width: "100%",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    borderRadius: 30,
   },
   buttonOutline: {
     backgroundColor: "white",
@@ -199,11 +242,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 16,
+    fontFamily: "Lexend-Regular",
   },
   buttonOutlineText: {
     color: "#0782F9",
     fontWeight: "700",
     fontSize: 16,
+  },
+  image: {
+    height: height - 750,
+    width: width - 300,
+    marginBottom: 10,
   },
 });
 
