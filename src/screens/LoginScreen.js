@@ -7,9 +7,11 @@ import {
   View,
   Dimensions,
   Image,
+  Pressable,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { BackHandler } from "react-native";
@@ -25,6 +27,8 @@ import {
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [rightIcon, setRightIcon] = useState("eye");
 
   const navigation = useNavigation();
 
@@ -58,6 +62,16 @@ const LoginScreen = () => {
     });
     return unsubscribe;
   }, []);
+
+  const handlePasswordVisibility = () => {
+    if (rightIcon === "eye") {
+      setRightIcon("eye-off");
+      setPasswordVisibility(!passwordVisibility);
+    } else if (rightIcon === "eye-off") {
+      setRightIcon("eye");
+      setPasswordVisibility(!passwordVisibility);
+    }
+  };
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -121,14 +135,22 @@ const LoginScreen = () => {
           >
             Password
           </Text>
+        </View>
+        <View style={styles.passwordInputContainer}>
           <TextInput
             value={password}
             onChangeText={(text) => {
               setPassword(text);
             }}
-            style={styles.input}
-            secureTextEntry
+            style={styles.passwordInput}
+            secureTextEntry={passwordVisibility}
           />
+          <Pressable
+            style={{ marginLeft: 15 }}
+            onPress={handlePasswordVisibility}
+          >
+            <MaterialCommunityIcons name={rightIcon} size={22} color="grey" />
+          </Pressable>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={handleLogin} style={{ width: "100%" }}>
@@ -179,11 +201,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   inputContainer: {
     width: "85%",
   },
+  passwordInputContainer: {
+    width: "85%",
+    flexDirection: "row",
+    backgroundColor: "#cdcdcd",
+    alignItems: "center",
+    borderRadius: 5,
+  },
+  passwordInput: {
+    paddingLeft: 15,
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginTop: 5,
+    backgroundColor: "#cdcdcd",
+    width: "85%",
+  },
   input: {
-    backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 5,
