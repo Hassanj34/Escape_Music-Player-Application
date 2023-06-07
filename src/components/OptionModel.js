@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 import color from "../misc/color";
+import { LinearGradient } from "expo-linear-gradient";
+import MaskedView from "@react-native-masked-view/masked-view";
 
 const OptionModel = ({
   visible,
@@ -33,16 +35,17 @@ const OptionModel = ({
                   key={optn.title}
                   onPress={optn.onPress}
                 >
-                  <Text style={styles.option}>{optn.title}</Text>
+                  <LinearGradient
+                    colors={["#b80a43", "#5d2379", "#312f94"]}
+                    start={{ x: 0, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    style={styles.button}
+                  >
+                    <Text style={styles.option}>{optn.title}</Text>
+                  </LinearGradient>
                 </TouchableWithoutFeedback>
               );
             })}
-            {/* <TouchableWithoutFeedback onPress={onPlayPress}>
-              <Text style={styles.option}>Play</Text>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={onPlaylistPress}>
-              <Text style={styles.option}>Add to playlist</Text>
-            </TouchableWithoutFeedback> */}
           </View>
         </View>
         <TouchableWithoutFeedback onPress={onClose}>
@@ -59,27 +62,36 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
-    backgroundColor: color.APP_BG,
+    backgroundColor: "white",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     zIndex: 1000,
+    borderColor: "black",
+    borderTopWidth: 1,
   },
   optionContainer: {
     padding: 20,
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
     padding: 20,
     paddingBottom: 0,
-    color: color.FONT_MEDIUM,
+    color: "black",
+    fontFamily: "Lexend-Regular",
+  },
+  button: {
+    width: "50%",
+    padding: 5,
+    alignItems: "center",
+    borderRadius: 15,
   },
   option: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: color.FONT,
-    paddingVertical: 10,
+    paddingVertical: 8,
     letterSpacing: 1,
+    color: "white",
+    fontFamily: "Lexend-Regular"
   },
   modalBg: {
     position: "absolute",
@@ -87,7 +99,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: 0,
-    backgroundColor: color.MODAL_BG,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
   },
 });
 

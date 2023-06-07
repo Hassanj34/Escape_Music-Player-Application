@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { LayoutProvider, RecyclerListView } from "recyclerlistview";
 import { Audio } from "expo-av";
@@ -15,6 +15,7 @@ import {
 } from "../misc/audioController";
 import { storeAudioForNextOpening } from "../misc/helper";
 import color from "../misc/color";
+import * as Font from "expo-font";
 
 export class AudioList extends Component {
   static contextType = AudioContext;
@@ -40,7 +41,14 @@ export class AudioList extends Component {
     await selectAudio(audio, this.context);
   };
 
-  componentDidMount() {
+  async loadFonts() {
+    await Font.loadAsync({
+      "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+    });
+  }
+
+  async componentDidMount() {
+    await this.loadFonts();
     this.context.loadPreviousAudio();
   }
 
@@ -73,8 +81,13 @@ export class AudioList extends Component {
         {({ dataProvider, isPlaying }) => {
           if (!dataProvider._data.length) return null;
           return (
-            <View style={{ flex: 1, marginBottom: 20, marginTop: 20 }}>
-              <Text style={styles.header}>Device Audios</Text>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: "black",
+              }}
+            >
+              <Text style={styles.header}>Library</Text>
               <RecyclerListView
                 dataProvider={dataProvider}
                 layoutProvider={this.layoutProvider}
@@ -105,11 +118,12 @@ export class AudioList extends Component {
 const styles = StyleSheet.create({
   header: {
     textAlign: "center",
-    fontSize: 23,
+    fontSize: 25,
     fontWeight: "bold",
     paddingTop: 20,
     paddingBottom: 30,
-    color: color.ACTIVE_BG,
+    color: "white",
+    fontFamily: "Lexend-Regular"
   },
 });
 

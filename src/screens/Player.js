@@ -1,7 +1,15 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Image,
+  ImageBackground,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
+import * as Font from "expo-font";
 
 import color from "../misc/color";
 import PlayerButton from "../components/PlayerButton";
@@ -49,6 +57,13 @@ const Player = () => {
   };
 
   useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+      });
+    };
+
+    loadFonts();
     context.loadPreviousAudio();
   }, []);
 
@@ -62,103 +77,133 @@ const Player = () => {
   if (!context.currentAudio) return null;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.audioCountContainer}>
-        <View style={styles.playListAudioCountContainer}>
-          {context.isPlayListRunning && (
-            <>
-              <Text style={{ fontSize: 16 }}>Playing from : </Text>
-              <Text
-                style={{
-                  color: color.ACTIVE_BG,
-                  fontSize: 16,
-                }}
-              >
-                {context.activePlayList.title}
-              </Text>
-            </>
-          )}
+    <ImageBackground
+      source={require("../../assets/player-background.png")}
+      resizeMode="cover"
+      style={{
+        flex: 1,
+        opacity: 0.9,
+        justifyContent: "center",
+      }}
+    >
+      <View style={styles.container}>
+        <View style={styles.audioCountContainer}>
+          <View style={styles.playListAudioCountContainer}>
+            {context.isPlayListRunning && (
+              <>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "white",
+                    fontFamily: "Lexend-Regular",
+                  }}
+                >
+                  Playing from :{" "}
+                </Text>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 16,
+                  }}
+                >
+                  {context.activePlayList.title}
+                </Text>
+              </>
+            )}
+          </View>
+          <Text style={styles.audioCount}>
+            {context.currentAudioIndex + 1 + " / " + context.totalAudioCount}
+          </Text>
         </View>
-        <Text style={styles.audioCount}>
-          {context.currentAudioIndex + 1 + " / " + context.totalAudioCount}
-        </Text>
-      </View>
 
-      <View style={styles.midBannerContainer}>
-        <MaterialCommunityIcons
-          name="music-circle"
-          size={300}
-          color={context.isPlaying ? color.ACTIVE_BG : color.FONT}
-        />
-      </View>
-      <View style={styles.audioPlayerContainer}>
-        <Text numberOfLines={1} style={styles.audioTitle}>
-          {context.currentAudio.filename}
-        </Text>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingHorizontal: 15,
-          }}
-        >
-          <Text>{convertTime(context.currentAudio.duration)}</Text>
-          <Text>{currentPostion ? currentPostion : renderCurrentTime()}</Text>
-        </View>
-        <Slider
-          style={{ width: width, height: 40 }}
-          minimumValue={0}
-          maximumValue={1}
-          value={calculateSeekBar()}
-          minimumTrackTintColor={color.FONT_MEDIUM}
-          maximumTrackTintColor={color.ACTIVE_BG}
-          onValueChange={(value) => {
-            setCurrentPosition(
-              convertTime(value * context.currentAudio.duration)
-            );
-          }}
-          onSlidingStart={async () => {
-            if (!context.isPlaying) return;
-            try {
-              await pause(context.playbackObj);
-            } catch (error) {
-              console.log(
-                "error insisde onSlidingStart callback",
-                error.message
-              );
-            }
-          }}
-          onSlidingComplete={async (value) => {
-            await moveAudio(context, value);
-            setCurrentPosition(0);
-          }}
-        />
-        <View style={styles.audioControllers}>
-          <PlayerButton iconType="PREVIOUS" onPress={handlePrevious} />
-          <PlayerButton
-            onPress={handlePlayPause}
-            style={{ marginHorizontal: 15 }}
-            iconType={context.isPlaying ? "PAUSE" : "PLAY"}
+        <View style={styles.midBannerContainer}>
+          <Image
+            source={require("../../assets/music.png")}
+            resizeMode="cover"
+            style={{ height: 250, width: 250 }}
           />
-          <PlayerButton iconType="NEXT" onPress={handleNext} />
+          {/* <MaterialCommunityIcons
+            name="music-circle"
+            size={300}
+            color={context.isPlaying ? color.ACTIVE_BG : color.FONT}
+          /> */}
+        </View>
+        <View style={styles.audioPlayerContainer}>
+          <Text numberOfLines={1} style={styles.audioTitle}>
+            {context.currentAudio.filename}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 30,
+            }}
+          >
+            <Text style={{ color: "white", fontFamily: "Lexend-Regular" }}>
+              {convertTime(context.currentAudio.duration)}
+            </Text>
+            <Text style={{ color: "white", fontFamily: "Lexend-Regular" }}>
+              {currentPostion ? currentPostion : renderCurrentTime()}
+            </Text>
+          </View>
+          <Slider
+            style={{ width: width - 30, height: 40, alignSelf: "center" }}
+            minimumValue={0}
+            maximumValue={1}
+            value={calculateSeekBar()}
+            minimumTrackTintColor="white"
+            maximumTrackTintColor="white"
+            thumbTintColor="white"
+            onValueChange={(value) => {
+              setCurrentPosition(
+                convertTime(value * context.currentAudio.duration)
+              );
+            }}
+            onSlidingStart={async () => {
+              if (!context.isPlaying) return;
+              try {
+                await pause(context.playbackObj);
+              } catch (error) {
+                console.log(
+                  "error insisde onSlidingStart callback",
+                  error.message
+                );
+              }
+            }}
+            onSlidingComplete={async (value) => {
+              await moveAudio(context, value);
+              setCurrentPosition(0);
+            }}
+          />
+          <View style={styles.audioControllers}>
+            <PlayerButton iconType="PREVIOUS" onPress={handlePrevious} />
+            <PlayerButton
+              onPress={handlePlayPause}
+              style={{ marginHorizontal: 15 }}
+              iconType={context.isPlaying ? "PAUSE" : "PLAY"}
+            />
+            <PlayerButton iconType="NEXT" onPress={handleNext} />
+          </View>
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
+  },
+  audioPlayerContainer: {
+    marginBottom: 5,
   },
   audioCount: {
     textAlign: "right",
-    color: color.ACTIVE_BG,
+    color: "white",
     fontSize: 16,
     paddingTop: 20,
     paddingRight: 10,
+    fontFamily: "Lexend-Regular",
   },
   midBannerContainer: {
     flex: 1,
@@ -166,9 +211,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   audioTitle: {
-    fontSize: 16,
-    color: color.FONT,
-    padding: 15,
+    fontSize: 20,
+    color: "white",
+    paddingHorizontal: 30,
+    paddingVertical: 20,
+    fontWeight: "600",
+    fontFamily: "Lexend-Regular",
   },
   audioControllers: {
     width: width,

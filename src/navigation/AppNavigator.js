@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -10,6 +10,9 @@ import Player from "../screens/Player";
 import Playlist from "../screens/Playlist";
 import PLayListDetail from "../screens/PlayListDetail";
 import ProfileScreen from "../screens/ProfileScreen";
+import { Text } from "react-native";
+import Icons from "../components/Icons";
+import * as Font from "expo-font";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,15 +27,49 @@ const PlayListScreen = () => {
 };
 
 const AppNavigator = () => {
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        Custom: require("../../assets/fonts/Custom.ttf"),
+      });
+    };
+
+    loadFonts();
+  }, []);
+
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveBackgroundColor: "black",
+        tabBarInactiveBackgroundColor: "black",
+        tabBarActiveTintColor: "white",
+      }}
+    >
       <Tab.Screen
-        name="AudioList"
+        name="Your Library"
         component={AudioList}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-headset-sharp" size={size} color={color} />
+            <Icons name="icon-icons8-music-library-96" size={size} color={color} />
           ),
+          // headerShown: true,
+          // header: () => (
+          //   <Text
+          //     style={{
+          //       textAlign: "center",
+          //       fontSize: 25,
+          //       fontWeight: "bold",
+          //       paddingTop: 20,
+          //       // paddingBottom: 30,
+          //       color: "white",
+          //       // fontFamily: "Lexend-Regular",
+          //       backgroundColor: "black",
+          //     }}
+          //   >
+          //     Library
+          //   </Text>
+          // ),
         }}
       />
       <Tab.Screen
@@ -40,7 +77,7 @@ const AppNavigator = () => {
         component={Player}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="compact-disc" size={size} color={color} />
+            <Icons name="icon-icons8-music-record-96" size={size} color={color} />
           ),
         }}
       />
@@ -49,7 +86,7 @@ const AppNavigator = () => {
         component={PlayListScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="library-music" size={size} color={color} />
+            <Icons name="icon-icons8-playlist-96" size={size} color={color} />
           ),
         }}
       />
@@ -58,7 +95,7 @@ const AppNavigator = () => {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person" size={size} color={color} />
+            <Icons name="icon-icons8-user-96" size={size} color={color} />
           ),
         }}
       />

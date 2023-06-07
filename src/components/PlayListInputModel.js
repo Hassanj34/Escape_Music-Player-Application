@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 import color from "../misc/color";
 
@@ -31,9 +33,16 @@ const PlayListInputModel = ({ visible, onClose, onSubmit }) => {
         <View style={styles.modalContainer}>
           <View style={styles.inputContainer}>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <AntDesign name="closecircle" size={24} color={color.ACTIVE_BG} />
+              <Ionicons name="chevron-back" size={24} color="white" />
             </TouchableOpacity>
-            <Text style={{ color: color.ACTIVE_BG, fontSize: 18, padding: 20 }}>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 20,
+                marginBottom: 50,
+                fontFamily: "Lexend-Regular",
+              }}
+            >
               Create New Playlist
             </Text>
             <TextInput
@@ -41,8 +50,23 @@ const PlayListInputModel = ({ visible, onClose, onSubmit }) => {
               onChangeText={(text) => setPLayListName(text)}
               style={styles.input}
             />
-            <TouchableOpacity onPress={handleOnSubmit}>
-              <Text style={styles.submitButton}>Create</Text>
+            <TouchableOpacity
+              onPress={handleOnSubmit}
+              style={{
+                width: "50%",
+                alignContent: "center",
+                alignItems: "center",
+                marginTop: 10,
+              }}
+            >
+              <LinearGradient
+                colors={["#b80a43", "#5d2379", "#312f94"]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.button}
+              >
+                <Text style={styles.submitButton}>Create</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
@@ -62,37 +86,44 @@ const styles = StyleSheet.create({
   closeButton: {
     position: "absolute",
     top: 10,
-    right: 10,
+    left: 1,
     padding: 8,
+  },
+  button: {
+    width: "70%",
+    padding: 5,
+    alignItems: "center",
+    borderRadius: 15,
   },
   inputContainer: {
     width: width - 20,
     height: 200,
     borderRadius: 10,
-    backgroundColor: color.ACTIVE_FONT,
+    borderWidth: 0.5,
+    borderColor: "grey",
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
   },
   input: {
     width: width - 40,
     borderBottomWidth: 1,
-    borderBottomColor: color.ACTIVE_BG,
+    borderBottomColor: "white",
     fontSize: 18,
     paddingVertical: 5,
+    fontFamily: "Lexend-Regular",
+    color: "white",
   },
   submitButton: {
-    padding: 10,
-    backgroundColor: color.ACTIVE_BG,
-    borderRadius: 10,
-    marginTop: 15,
-    color: color.ACTIVE_FONT,
+    padding: 5,
     fontSize: 18,
-    width: 100,
     textAlign: "center",
+    fontFamily: "Lexend-Regular",
+    color: "white",
   },
   modalBG: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.7)",
     justifyContent: "center",
     alignItems: "center",
   },

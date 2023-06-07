@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "886723908469",
+    "project_id": "music-player-18839",
+    "storage_bucket": "music-player-18839.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886723908469:android:c87d9122e02bdbb631b93c",
+        "android_client_info": {
+          "package_name": "com.jamilh1234.musicplayer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886723908469-1oa0rqldd4scgus782mp829uaamataeu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jamilh1234.musicplayer",
+            "certificate_hash": "7c5d1aa5f3917fdac4aaf8827aa802bd28c16ea8"
+          }
+        },
+        {
+          "client_id": "886723908469-lnensqp56qsqgf50i3hta72qkr4j8on8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jamilh1234.musicplayer",
+            "certificate_hash": "7a6af99ebd7acb7c869d96756b764730f44c5533"
+          }
+        },
+        {
+          "client_id": "886723908469-jg5keju71ruh6jp3c8v0o653gde2enqm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4-LfDkNy8rIudLrCmoTiqLcwbMGjQp-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886723908469-jg5keju71ruh6jp3c8v0o653gde2enqm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

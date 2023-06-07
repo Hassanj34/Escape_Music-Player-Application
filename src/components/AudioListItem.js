@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Entypo } from "@expo/vector-icons";
 import color from "../misc/color";
 import { Dimensions } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
+import { TouchableWithoutFeedback, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import * as Font from "expo-font";
 
 const getThumbnailText = (filename) => filename[0].toUpperCase();
 
@@ -44,27 +46,40 @@ const AudioListItem = ({
   isPlaying,
   activeListItem,
 }) => {
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+      });
+    };
+
+    loadFonts();
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
         <TouchableWithoutFeedback onPress={onAudioPress}>
           <View style={styles.leftContainer}>
-            <View
-              style={[
-                styles.thumbnail,
-                {
-                  backgroundColor: activeListItem
-                    ? color.ACTIVE_BG
-                    : color.FONT_LIGHT,
-                },
-              ]}
+            <LinearGradient
+              colors={["#b80a43", "#5d2379", "#312f94"]}
+              start={{ x: 0.5, y: 0.1 }}
+              end={{ x: 0.4, y: 1 }}
+              style={[styles.thumbnail]}
             >
-              <Text style={styles.thumbnailText}>
-                {activeListItem
-                  ? renderPlayPauseIcon(isPlaying)
-                  : getThumbnailText(title)}
-              </Text>
-            </View>
+              <View>
+                {activeListItem ? (
+                  renderPlayPauseIcon(isPlaying)
+                ) : (
+                  <Image
+                    source={require("../../assets/Audacity.png")}
+                    resizeMode="contain"
+                    style={{ width: 40, height: 40 }}
+                  />
+                )}
+              </View>
+            </LinearGradient>
             <View style={styles.titleContainer}>
               <Text numberOfLines={1} style={styles.title}>
                 {title}
@@ -77,7 +92,7 @@ const AudioListItem = ({
           <Entypo
             name="dots-three-vertical"
             size={20}
-            color={color.FONT_MEDIUM}
+            color="white"
             onPress={onOptionPress}
             style={{ padding: 10 }}
           />
@@ -123,7 +138,7 @@ const styles = StyleSheet.create({
   thumbnailText: {
     fontSize: 22,
     fontWeight: "bold",
-    color: color.FONT,
+    color: "white",
   },
   titleContainer: {
     width: width - 180,
@@ -131,7 +146,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    color: color.FONT,
+    color: "white",
+    fontFamily: "Lexend-Regular"
   },
   seperator: {
     width: width - 80,
@@ -143,7 +159,8 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 14,
-    color: color.FONT_LIGHT,
+    color: "white",
+    fontFamily: "Lexend-Regular",
   },
 });
 

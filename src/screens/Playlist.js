@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import color from "../misc/color";
@@ -12,8 +13,11 @@ import PlayListInputModel from "../components/PlayListInputModel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AudioContext } from "../context/AudioProvider";
 import { play } from "../misc/audioController";
+import { LinearGradient } from "expo-linear-gradient";
 import { FlatList } from "react-native";
 import PLayListDetail from "../components/PlayListDetail";
+import MaskedView from "@react-native-masked-view/masked-view";
+import * as Font from "expo-font";
 
 let selectedPlayList = {};
 
@@ -66,6 +70,13 @@ const Playlist = ({ navigation }) => {
   };
 
   useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        "Lexend-Regular": require("../../assets/fonts/Lexend-Regular.ttf"),
+      });
+    };
+
+    loadFonts();
     if (!playList.length) {
       renderPLayList();
     }
@@ -118,48 +129,82 @@ const Playlist = ({ navigation }) => {
   return (
     <>
       {playList.length === 1 ? (
-        <Text style={styles.header}>Playlist</Text>
+        <Text style={styles.header}>My Playlist</Text>
       ) : (
-        <Text style={styles.header}>Playlists</Text>
+        <Text style={styles.header}>My Playlists</Text>
       )}
       {playList.length === 0 ? (
-        <Text style={styles.noPlaylist}>No Playlists</Text>
+        <Text style={styles.noPlaylist}>No playlists</Text>
       ) : null}
-      <ScrollView contentContainerStyle={styles.container}>
-        {playList.length
-          ? playList.map((item) => (
-              <TouchableOpacity
-                key={item.id ? item.id.toString() : null}
-                style={styles.playListBanner}
-                onPress={() => handleBannerPress(item)}
-              >
-                <Text>{item.title}</Text>
-                <Text style={styles.audioCount}>
-                  {item.audios.length === 1
-                    ? item.audios.length + " Song"
-                    : item.audios.length + " Songs"}
-                </Text>
-              </TouchableOpacity>
-            ))
-          : null}
+      <View style={{ backgroundColor: "black", flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.container}>
+          {playList.length
+            ? playList.map((item) => (
+                <TouchableOpacity
+                  key={item.id ? item.id.toString() : null}
+                  style={styles.playListBanner}
+                  onPress={() => handleBannerPress(item)}
+                >
+                  <View style={{ flexDirection: "row" }}>
+                    <LinearGradient
+                      colors={["#b80a43", "#5d2379", "#312f94"]}
+                      start={{ x: 0.5, y: 0.1 }}
+                      end={{ x: 0.4, y: 1 }}
+                      style={[styles.thumbnail]}
+                    >
+                      <Image
+                        source={require("../../assets/Audacity.png")}
+                        resizeMode="contain"
+                        style={{ width: 40, height: 40 }}
+                      />
+                    </LinearGradient>
+                    <View style={{ marginTop: 5 }}>
+                      <Text
+                        style={{ color: "white", fontFamily: "Lexend-Regular" }}
+                      >
+                        {item.title}
+                      </Text>
+                      <Text style={styles.audioCount}>
+                        {item.audios.length === 1
+                          ? item.audios.length + " Song"
+                          : item.audios.length + " Songs"}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+            : null}
 
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={{ marginTop: 15 }}
-        >
-          <Text style={styles.playListButton}>+ Add New Playlist</Text>
-        </TouchableOpacity>
-        <PlayListInputModel
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          onSubmit={createPLayList}
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={{ marginTop: 15 }}
+          >
+            <MaskedView
+              style={{ height: 45 }}
+              maskElement={
+                <Text style={styles.playListButton}>+ Add new playlist</Text>
+              }
+            >
+              <LinearGradient
+                colors={["#b80a43", "#5d2379", "#312f94"]}
+                start={{ x: 0, y: 0.8 }}
+                end={{ x: 0.3, y: 0.5 }}
+                style={{ flex: 1 }}
+              />
+            </MaskedView>
+          </TouchableOpacity>
+          <PlayListInputModel
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onSubmit={createPLayList}
+          />
+        </ScrollView>
+        <PLayListDetail
+          visible={showPlayList}
+          playList={selectedPlayList}
+          onClose={() => setShowPlayList(false)}
         />
-      </ScrollView>
-      <PLayListDetail
-        visible={showPlayList}
-        playList={selectedPlayList}
-        onClose={() => setShowPlayList(false)}
-      />
+      </View>
     </>
   );
 };
@@ -167,41 +212,55 @@ const Playlist = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    backgroundColor: "black",
   },
   playListBanner: {
     padding: 5,
-    backgroundColor: "rgba(204, 204, 204, 0.3)",
+    backgroundColor: "black",
     borderRadius: 5,
     marginBottom: 15,
   },
   audioCount: {
     marginTop: 3,
-    opacity: 0.5,
     fontSize: 14,
+    color: "white",
+    fontFamily: "Lexend-Regular",
   },
 
   playListButton: {
     color: color.ACTIVE_BG,
     letterSpacing: 1,
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 18,
     padding: 5,
   },
   header: {
     textAlign: "center",
-    fontSize: 23,
-    fontWeight: "bold",
+    fontSize: 26,
     paddingTop: 30,
     paddingBottom: 5,
-    color: color.ACTIVE_BG,
+    color: "white",
+    backgroundColor: "black",
+    fontFamily: "Lexend-Regular",
+  },
+  thumbnail: {
+    height: 50,
+    flexBasis: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    borderRadius: 25,
+    marginRight: 20,
   },
   noPlaylist: {
     textAlign: "center",
     fontSize: 25,
-    fontWeight: "bold",
     paddingTop: 30,
     paddingBottom: 5,
     color: color.FONT_LIGHT,
+    backgroundColor: "black",
+    fontFamily: "Lexend-Regular",
   },
 });
 

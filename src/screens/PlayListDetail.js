@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import color from "../misc/color";
 import AudioListItem from "../components/AudioListItem";
 import { selectAudio } from "../misc/audioController";
@@ -16,6 +16,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Touchable } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icons from "../components/Icons";
+import * as Font from "expo-font";
+import { LinearGradient } from "expo-linear-gradient";
+import MaskedView from "@react-native-masked-view/masked-view";
+import { Ionicons } from "@expo/vector-icons";
 
 const PLayListDetail = (props) => {
   const context = useContext(AudioContext);
@@ -24,6 +29,16 @@ const PLayListDetail = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const [audios, setAudios] = useState(playList.audios);
+
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        Custom: require("../../assets/fonts/Custom.ttf"),
+      });
+    };
+
+    loadFonts();
+  }, []);
 
   const playAudio = async (audio) => {
     await selectAudio(audio, context, {
@@ -124,7 +139,20 @@ const PLayListDetail = (props) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>{playList.title}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignContent: "center",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity onPress={() => props.navigation.goBack()} style={{position: "absolute", left: 5, padding: 15}}>
+            <Ionicons name="chevron-back" size={32} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{playList.title}</Text>
+        </View>
+
         {audios.length ? (
           <FlatList
             contentContainerStyle={styles.listContainer}
@@ -147,17 +175,41 @@ const PLayListDetail = (props) => {
             )}
           />
         ) : (
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: color.FONT_LIGHT,
-              fontSize: 25,
-              paddingTop: 50,
-            }}
+          <MaskedView
+            style={{ height: 50, marginTop: 50 }}
+            maskElement={
+              <Text
+                style={{
+                  fontSize: 25,
+                  textAlign: "center",
+                  fontFamily: "Lexend-Regular",
+                }}
+              >
+                No audios in playlist
+              </Text>
+            }
           >
-            No audios in playlist
-          </Text>
+            <LinearGradient
+              colors={["#312f94", "#5d2379", "#b80a43"]}
+              start={{ x: 0.7, y: 0.8 }}
+              end={{ x: 0.3, y: 0.5 }}
+              style={{ flex: 1 }}
+            />
+          </MaskedView>
         )}
+        <LinearGradient
+          colors={["#b80a43", "#5d2379", "#312f94"]}
+          start={{ x: 0.5, y: 0.1 }}
+          end={{ x: 0.4, y: 1 }}
+          style={[styles.thumbnail]}
+        >
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={removePlayList}
+          >
+            <Icons name="icon-icons8-delete-96" size={30} color="white" />
+          </TouchableOpacity>
+        </LinearGradient>
       </View>
       <OptionModel
         visible={modalVisible}
@@ -165,35 +217,41 @@ const PLayListDetail = (props) => {
         options={[{ title: "Remove from playlist", onPress: removeAudio }]}
         currentItem={selectedItem}
       />
-      <View style={styles.deleteButton}>
-        <TouchableOpacity onPress={removePlayList}>
-          <MaterialCommunityIcons name="delete-circle" size={40} color="red" />
-        </TouchableOpacity>
-      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "center",
+    flex: 1,
+    backgroundColor: "black",
   },
   listContainer: {
     padding: 20,
   },
   title: {
     textAlign: "center",
-    fontSize: 23,
-    paddingTop: 30,
+    fontSize: 26,
+    paddingTop: 25,
     paddingBottom: 30,
-    fontWeight: "bold",
-    color: color.ACTIVE_BG,
+    color: "white",
+    fontFamily: "Lexend-Regular",
+  },
+  thumbnail: {
+    height: 50,
+    width: 50,
+    flexBasis: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    position: "absolute",
+    bottom: 1,
+    borderRadius: 25,
+    marginBottom: 30,
   },
   deleteButton: {
-    position: "absolute",
-    right: 20,
-    bottom: 20,
-    padding: 5,
+    alignSelf: "center",
     color: "red",
   },
 });

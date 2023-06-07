@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 import { Snackbar } from "react-native-paper";
@@ -199,18 +200,24 @@ const ProfileScreen = () => {
 
   const selectImagePicker = () => {
     Alert.alert(
-      "Upload profile picture",
+      "Set profile picture",
       "Select image from gallery or take a picture from camera",
       [
         {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
           text: "Select image from gallery",
           onPress: showImagePicker,
+          style: "destructive",
         },
         {
           text: "Take a photo",
           onPress: openCamera,
         },
-      ]
+      ],
+      { cancelable: true }
     );
   };
 
@@ -227,7 +234,7 @@ const ProfileScreen = () => {
       ) : (
         <View style={styles.inputContainer}>
           <View style={styles.imageContainer}>
-            {downloadImage ? (
+            {downloadedImage ? (
               downloadedImage && (
                 <TouchableOpacity onPress={selectImagePicker}>
                   <Image
@@ -279,7 +286,7 @@ const ProfileScreen = () => {
             style={styles.input}
             editable={false}
           />
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <TextInput
               placeholder="Date of Birth"
               value={date.toDateString()}
@@ -311,17 +318,39 @@ const ProfileScreen = () => {
               setAddress(text);
             }}
             style={styles.input}
-          />
+          /> */}
         </View>
       )}
 
-      <TouchableOpacity onPress={handleUpdate} style={styles.updateButton}>
-        <Text style={{ color: "white", fontWeight: "700", fontSize: 16 }}>
-          Update
-        </Text>
+      <TouchableOpacity onPress={handleUpdate} style={{ width: "80%" }}>
+        <LinearGradient
+          colors={["#b80a43", "#5d2379", "#312f94"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.button}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 16,
+              fontFamily: "Lexend-Regular",
+            }}
+          >
+            Update
+          </Text>
+        </LinearGradient>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSingOut} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
+      <TouchableOpacity onPress={handleSingOut} style={{ width: "80%" }}>
+        <LinearGradient
+          colors={["#b80a43", "#5d2379", "#312f94"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.buttonOutline}
+        >
+          <View style={styles.circleGradient}>
+            <Text style={styles.buttonOutlineText}>Log out</Text>
+          </View>
+        </LinearGradient>
       </TouchableOpacity>
       <Snackbar
         style={{ backgroundColor: color.ACTIVE_BG, color: "white" }}
@@ -339,23 +368,45 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingBottom: 50,
     fontWeight: "600",
-    color: "#0782F9",
+    color: "white",
+    fontFamily: "Lexend-Regular",
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "black",
   },
   inputContainer: {
     width: "80%",
   },
+  circleGradient: {
+    backgroundColor: "black",
+    borderRadius: 5,
+    padding: 12,
+    width: "100%",
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+  },
+  buttonOutline: {
+    width: "100%",
+    padding: 2,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 10,
+  },
   input: {
-    backgroundColor: "white",
-    paddingHorizontal: 15,
+    backgroundColor: "black",
     paddingVertical: 10,
-    borderRadius: 10,
     marginTop: 5,
-    color: "black",
+    color: "white",
+    fontFamily: "Lexend-Regular",
+    borderBottomColor: "grey",
+    borderBottomWidth: 0.2,
   },
   buttonContainer: {
     width: "60%",
@@ -364,15 +415,11 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: "white",
-    width: "60%",
-    position: "absolute",
-    bottom: 10,
-    padding: 16,
+    width: "100%",
+    padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    borderColor: "#0782F9",
-    borderWidth: 2,
+    borderRadius: 30,
   },
   updateButton: {
     backgroundColor: "#0782F9",
@@ -381,36 +428,32 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
-  buttonOutline: {
-    backgroundColor: "white",
-    marginTop: 5,
-    borderColor: "#0782F9",
-    borderWidth: 2,
-  },
   buttonText: {
     color: "#0782F9",
     fontWeight: "700",
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: "#0782F9",
-    fontWeight: "700",
+    color: "white",
     fontSize: 16,
+    fontFamily: "Lexend-Regular",
   },
   imageContainer: {
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    width: "30%",
-    height: "20%",
+    width: "55%",
+    height: "35%",
     marginBottom: 50,
   },
   image: {
-    width: "30%",
-    height: "40%",
-    borderWidth: 1,
+    width: "90%",
+    height: "30%",
     borderRadius: 200,
-    padding: 50,
+    padding: 80,
+  },
+  default: {
+    backgroundColor: "black",
   },
 });
 
