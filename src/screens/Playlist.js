@@ -153,7 +153,7 @@ const Playlist = ({ navigation }) => {
                       style={[styles.thumbnail]}
                     >
                       <Image
-                        source={require("../../assets/Audacity.png")}
+                        source={require("../../assets/Audacity2.png")}
                         resizeMode="contain"
                         style={{ width: 40, height: 40 }}
                       />
