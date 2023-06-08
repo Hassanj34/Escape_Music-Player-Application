@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Font from "expo-font";
+import FirebaseNotificationInit from '../components/FireBaseNotification';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -22,14 +23,17 @@ const SplashScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        resizeMode="cover"
-        source={require("../../assets/app-logo.png")}
-      />
-      <Text style={styles.text}>Escape</Text>
-    </View>
+    <>
+      {/* <FirebaseNotificationInit navigation={navigation} /> */}
+      <View style={styles.container}>
+        <Image
+          style={styles.image}
+          resizeMode="cover"
+          source={require("../../assets/app-logo.png")}
+        />
+        <Text style={styles.text}>Escape</Text>
+      </View>
+    </>
   );
 };
 

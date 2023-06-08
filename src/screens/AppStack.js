@@ -5,6 +5,7 @@ import AppNavigator from "../navigation/AppNavigator";
 import LoginScreen from "./LoginScreen";
 import SignupScreen from "./SignupScreen";
 
+
 const Stack = createStackNavigator();
 
 const AppStack = () => {

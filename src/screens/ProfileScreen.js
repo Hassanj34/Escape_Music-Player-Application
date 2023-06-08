@@ -17,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Snackbar } from "react-native-paper";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getBytes, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { MaterialDialog } from "react-native-material-dialog";
 
 import { db, auth, signOut, storage } from "../../firebase";
 import { ActivityIndicator } from "react-native";
@@ -40,6 +41,8 @@ const ProfileScreen = () => {
   const [isloading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [snackBarVisible, setSnackBarVisible] = useState(false);
+
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   const navigation = useNavigation();
 
@@ -199,26 +202,27 @@ const ProfileScreen = () => {
   };
 
   const selectImagePicker = () => {
-    Alert.alert(
-      "Set profile picture",
-      "Select image from gallery or take a picture from camera",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Select image from gallery",
-          onPress: showImagePicker,
-          style: "destructive",
-        },
-        {
-          text: "Take a photo",
-          onPress: openCamera,
-        },
-      ],
-      { cancelable: true }
-    );
+    // Alert.alert(
+    //   "Set profile picture",
+    //   "Select image from gallery or take a picture from camera",
+    //   [
+    //     {
+    //       text: "Cancel",
+    //       style: "cancel",
+    //     },
+    //     {
+    //       text: "Select image from gallery",
+    //       onPress: showImagePicker,
+    //       style: "destructive",
+    //     },
+    //     {
+    //       text: "Take a photo",
+    //       onPress: openCamera,
+    //     },
+    //   ],
+    //   { cancelable: true }
+    // );
+    setDialogVisible(true);
   };
 
   onDateSelected = (event, value) => {
@@ -359,6 +363,84 @@ const ProfileScreen = () => {
       >
         {isUpdating ? "Updating profile..." : "Profile updated"}
       </Snackbar>
+      {dialogVisible ? (
+        <MaterialDialog
+          title="Set profile picture"
+          visible={dialogVisible}
+          onCancel={() => setDialogVisible(false)}
+          backgroundColor="black"
+          titleColor="white"
+        >
+          <Text
+            style={{
+              color: "white",
+              fontFamily: "Lexend-Regular",
+              fontSize: 17,
+            }}
+          >
+            Select image from gallery or take picture from camera
+          </Text>
+          <View style={{ marginTop: 10 }}>
+            <TouchableOpacity
+              onPress={showImagePicker}
+              style={{ width: "100%" }}
+            >
+              <LinearGradient
+                colors={["#b80a43", "#5d2379", "#312f94"]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.dialogButton}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontFamily: "Lexend-Regular",
+                    fontSize: 17,
+                  }}
+                >
+                  Gallery
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={openCamera}
+              style={{ width: "100%", marginTop: 10 }}
+            >
+              <LinearGradient
+                colors={["#b80a43", "#5d2379", "#312f94"]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.dialogButton}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontFamily: "Lexend-Regular",
+                    fontSize: 17,
+                  }}
+                >
+                  Camera
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setDialogVisible(false)}
+              style={{ width: "100%" }}
+            >
+              <LinearGradient
+                colors={["#b80a43", "#5d2379", "#312f94"]}
+                start={{ x: 0, y: 0.5 }}
+                end={{ x: 1, y: 0.5 }}
+                style={styles.buttonOutline}
+              >
+                <View style={styles.circleGradient}>
+                  <Text style={styles.buttonOutlineText}>Cancel</Text>
+                </View>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </MaterialDialog>
+      ) : null}
     </KeyboardAvoidingView>
   );
 };
@@ -417,6 +499,13 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    borderRadius: 30,
+  },
+  dialogButton: {
+    width: "100%",
+    padding: 10,
     borderRadius: 10,
     alignItems: "center",
     borderRadius: 30,

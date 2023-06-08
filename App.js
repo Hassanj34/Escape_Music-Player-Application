@@ -9,6 +9,7 @@ import AudioProvider from "./src/context/AudioProvider";
 import color from "./src/misc/color";
 import AppStack from "./src/screens/AppStack";
 
+import * as Notifications from "expo-notifications";
 
 const MyTheme = {
   ...DefaultTheme,
@@ -21,63 +22,39 @@ const MyTheme = {
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Lexend-Regular": require("./assets/fonts/Lexend-Regular.ttf"),
-    "Custom": require("./assets/fonts/Custom.ttf"),
+    Custom: require("./assets/fonts/Custom.ttf"),
   });
+
+  useEffect(() => {
+    const registerForPushNotificationsAsync = async () => {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      // If the existing status is not granted, request permission from the user
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      // If permission is still not granted, display an error message
+      if (finalStatus !== "granted") {
+        console.log("Failed to get  notification Permissions!");
+        return;
+      } else {
+        console.log(
+          "FirebaseNotificationInit  notification Permissions Granted!"
+        );
+      }
+    };
+
+    registerForPushNotificationsAsync();
+    // FirebaseNotificationInit();
+  }, []);
 
   if (!fontsLoaded) {
     return null;
   }
-
-  // const requestPermissions = () => {
-  //   PermissionsAndroid.request(
-  //     PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   if (requestPermissions()) {
-  //     messaging()
-  //       .getToken()
-  //       .then((token) => {
-  //         console.log(token);
-  //       });
-  //   } else {
-  //     console.log("Failed token status");
-  //   }
-
-  //   //Check whether an initial notification is available
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         console.log(
-  //           "Notification caused app to open from quit state",
-  //           remoteMessage.notification
-  //         );
-  //       }
-  //     });
-
-  //   //When the app is running, but in background
-  //   //Assume a message-notification contains a "type" property in the data payload of the screen to open
-
-  //   messaging().onNotificationOpenedApp((remoteMessage) => {
-  //     console.log(
-  //       "Notification casused app to open from background state: ",
-  //       remoteMessage.notification
-  //     );
-  //   });
-
-  //   // Register background handler
-  //   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  //     console.log("Message handled in the background!", remoteMessage);
-  //   });
-
-  //   const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-  //     Alert.alert("A new FCM message arrived!", JSON.stringify(remoteMessage));
-  //   });
-
-  //   return unsubscribe;
-  // });
 
   return (
     <AudioProvider>
