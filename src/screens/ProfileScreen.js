@@ -7,21 +7,18 @@ import {
   KeyboardAvoidingView,
   TextInput,
   Image,
-  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
 import { Snackbar } from "react-native-paper";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getBytes, getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { MaterialDialog } from "react-native-material-dialog";
 
 import { db, auth, signOut, storage } from "../../firebase";
 import { ActivityIndicator } from "react-native";
-import color from "../misc/color";
 
 const ProfileScreen = () => {
   const [firstName, setFirstName] = useState("");
@@ -201,30 +198,6 @@ const ProfileScreen = () => {
     }
   };
 
-  const selectImagePicker = () => {
-    // Alert.alert(
-    //   "Set profile picture",
-    //   "Select image from gallery or take a picture from camera",
-    //   [
-    //     {
-    //       text: "Cancel",
-    //       style: "cancel",
-    //     },
-    //     {
-    //       text: "Select image from gallery",
-    //       onPress: showImagePicker,
-    //       style: "destructive",
-    //     },
-    //     {
-    //       text: "Take a photo",
-    //       onPress: openCamera,
-    //     },
-    //   ],
-    //   { cancelable: true }
-    // );
-    setDialogVisible(true);
-  };
-
   onDateSelected = (event, value) => {
     setDate(value);
     setDatePicker(false);
@@ -240,7 +213,7 @@ const ProfileScreen = () => {
           <View style={styles.imageContainer}>
             {downloadedImage ? (
               downloadedImage && (
-                <TouchableOpacity onPress={selectImagePicker}>
+                <TouchableOpacity onPress={() => setDialogVisible(true)}>
                   <Image
                     source={{ uri: downloadedImage }}
                     resizeMode="cover"
@@ -249,7 +222,7 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
               )
             ) : (
-              <TouchableOpacity onPress={selectImagePicker}>
+              <TouchableOpacity onPress={() => setDialogVisible(true)}>
                 {image ? (
                   image && (
                     <Image
@@ -290,39 +263,6 @@ const ProfileScreen = () => {
             style={styles.input}
             editable={false}
           />
-          {/* <TouchableOpacity>
-            <TextInput
-              placeholder="Date of Birth"
-              value={date.toDateString()}
-              style={styles.input}
-              onPressIn={() => setDatePicker(true)}
-            />
-          </TouchableOpacity>
-          {datePicker ? (
-            <DateTimePicker
-              value={date}
-              mode={"date"}
-              display={"default"}
-              is24Hour={false}
-              onChange={onDateSelected}
-            />
-          ) : null}
-          <TextInput
-            placeholder="Gender"
-            value={gender}
-            onChangeText={(text) => {
-              setGender(text);
-            }}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Address"
-            value={address}
-            onChangeText={(text) => {
-              setAddress(text);
-            }}
-            style={styles.input}
-          /> */}
         </View>
       )}
 
@@ -356,13 +296,19 @@ const ProfileScreen = () => {
           </View>
         </LinearGradient>
       </TouchableOpacity>
+
       <Snackbar
-        style={{ backgroundColor: color.ACTIVE_BG, color: "white" }}
+        style={{
+          backgroundColor: "rgba(64, 64, 64, 0.6)",
+          color: "yellow",
+          fontFamily: "Lexend-Regular",
+        }}
         visible={snackBarVisible}
         onDismiss={() => setSnackBarVisible(false)}
       >
         {isUpdating ? "Updating profile..." : "Profile updated"}
       </Snackbar>
+
       {dialogVisible ? (
         <MaterialDialog
           title="Set profile picture"
@@ -498,6 +444,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
+    height: 50,
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

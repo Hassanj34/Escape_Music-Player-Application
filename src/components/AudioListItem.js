@@ -7,8 +7,6 @@ import { TouchableWithoutFeedback, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import * as Font from "expo-font";
 
-const getThumbnailText = (filename) => filename[0].toUpperCase();
-
 const convertTime = (minutes) => {
   if (minutes) {
     const hours = minutes / 60;

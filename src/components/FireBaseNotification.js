@@ -37,8 +37,7 @@ const FirebaseNotificationInit = () => {
       remoteMessage.notification.title,
       remoteMessage.notification.body,
       [
-        { text: "Cancel", onPress: () => {} },
-        { text: "View", onPress: () => {} },
+        { text: "Okay", onPress: () => {} },
       ]
     );
   });

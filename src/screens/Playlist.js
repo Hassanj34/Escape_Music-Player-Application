@@ -12,12 +12,11 @@ import color from "../misc/color";
 import PlayListInputModel from "../components/PlayListInputModel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AudioContext } from "../context/AudioProvider";
-import { play } from "../misc/audioController";
 import { LinearGradient } from "expo-linear-gradient";
-import { FlatList } from "react-native";
 import PLayListDetail from "../components/PlayListDetail";
 import MaskedView from "@react-native-masked-view/masked-view";
 import * as Font from "expo-font";
+import NotificationCall from "../components/NotificationCall";
 
 let selectedPlayList = {};
 
@@ -117,12 +116,13 @@ const Playlist = ({ navigation }) => {
         return updateState(context, { addToPlayList: null });
       }
       updateState(context, { addToPlayList: null, playList: [...updatedList] });
+      
+      NotificationCall(addToPlayList.filename, playList.title);
       return AsyncStorage.setItem("playlist", JSON.stringify([...updatedList]));
     }
 
     //if no audio selected, open playlist
     selectedPlayList = playList;
-    // setShowPlayList(true);
     navigation.navigate("PlayListDetail", playList);
   };
 

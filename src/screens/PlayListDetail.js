@@ -2,20 +2,15 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
   FlatList,
-  Dimensions,
 } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
-import color from "../misc/color";
 import AudioListItem from "../components/AudioListItem";
 import { selectAudio } from "../misc/audioController";
 import { AudioContext } from "../context/AudioProvider";
 import OptionModel from "../components/OptionModel";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Touchable } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icons from "../components/Icons";
 import * as Font from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";

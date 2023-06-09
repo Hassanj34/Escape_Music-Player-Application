@@ -64,7 +64,6 @@ export class AudioProvider extends Component {
       ]),
       audioFiles: [...audioFiles, ...mediaFiles.assets],
     });
-    // console.log(mediaFiles.assets.length);
   };
 
   loadPreviousAudio = async () => {
@@ -79,7 +78,6 @@ export class AudioProvider extends Component {
       previousAudio = JSON.parse(previousAudio);
       currentAudio = previousAudio.audio;
       currentAudioIndex = previousAudio.index;
-      // console.log(currentAudioIndex);
     }
 
     this.setState({ ...this.state, currentAudio, currentAudioIndex });

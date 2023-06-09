@@ -7,20 +7,15 @@ import {
   ImageBackground,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import * as Font from "expo-font";
 
-import color from "../misc/color";
 import PlayerButton from "../components/PlayerButton";
 import { AudioContext } from "../context/AudioProvider";
 import {
   changeAudio,
   moveAudio,
   pause,
-  play,
-  playNext,
-  resume,
   selectAudio,
 } from "../misc/audioController";
 import { convertTime, storeAudioForNextOpening } from "../misc/helper";
@@ -122,11 +117,6 @@ const Player = () => {
             resizeMode="cover"
             style={{ height: 250, width: 250 }}
           />
-          {/* <MaterialCommunityIcons
-            name="music-circle"
-            size={300}
-            color={context.isPlaying ? color.ACTIVE_BG : color.FONT}
-          /> */}
         </View>
         <View style={styles.audioPlayerContainer}>
           <Text numberOfLines={1} style={styles.audioTitle}>

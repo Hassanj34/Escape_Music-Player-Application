@@ -1,9 +1,7 @@
-import { StyleSheet, Text, View, PermissionsAndroid } from "react-native";
-import { useEffect } from "react";
+import { StyleSheet} from "react-native";
+import React, { useEffect } from "react";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { createIconSet } from "@expo/vector-icons";
-import messaging from "@react-native-firebase/messaging";
 
 import AudioProvider from "./src/context/AudioProvider";
 import color from "./src/misc/color";

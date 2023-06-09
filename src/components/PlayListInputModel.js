@@ -5,11 +5,9 @@ import {
   Modal,
   TextInput,
   Dimensions,
-  TouchableWithoutFeedback,
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 

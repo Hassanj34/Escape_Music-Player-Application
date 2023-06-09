@@ -1,20 +1,13 @@
-import React, { Component, useEffect } from "react";
+import React, { Component } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { LayoutProvider, RecyclerListView } from "recyclerlistview";
-import { Audio } from "expo-av";
 
 import AudioListItem from "../components/AudioListItem";
 import OptionModel from "../components/OptionModel";
 import { AudioContext } from "../context/AudioProvider";
 import {
-  pause,
-  play,
-  playNext,
-  resume,
   selectAudio,
 } from "../misc/audioController";
-import { storeAudioForNextOpening } from "../misc/helper";
-import color from "../misc/color";
 import * as Font from "expo-font";
 
 export class AudioList extends Component {
@@ -118,8 +111,7 @@ export class AudioList extends Component {
 const styles = StyleSheet.create({
   header: {
     textAlign: "center",
-    fontSize: 25,
-    fontWeight: "bold",
+    fontSize: 26,
     paddingTop: 20,
     paddingBottom: 30,
     color: "white",

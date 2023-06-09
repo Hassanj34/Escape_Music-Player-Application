@@ -1,12 +1,32 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  BackHandler,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import * as Font from "expo-font";
-import FirebaseNotificationInit from '../components/FireBaseNotification';
+import FirebaseNotificationInit from "../components/FireBaseNotification";
 
 const SplashScreen = () => {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -24,7 +44,7 @@ const SplashScreen = () => {
 
   return (
     <>
-      {/* <FirebaseNotificationInit navigation={navigation} /> */}
+      <FirebaseNotificationInit navigation={navigation} />
       <View style={styles.container}>
         <Image
           style={styles.image}

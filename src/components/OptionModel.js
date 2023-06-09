@@ -7,16 +7,12 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import React from "react";
-import color from "../misc/color";
 import { LinearGradient } from "expo-linear-gradient";
-import MaskedView from "@react-native-masked-view/masked-view";
 
 const OptionModel = ({
   visible,
   onClose,
   currentItem,
-  onPlayPress,
-  onPlaylistPress,
   options,
 }) => {
   const { filename } = currentItem;
