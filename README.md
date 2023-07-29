@@ -1,5 +1,7 @@
 # Escape [Music Player Application]
 
+![Webpage 1](demonstration/Video1.mp4)
+
 ## Introduction
 Escape is a music player application having the complete set of basic features required by a music player with a user friendly UI.
 This is an Android application developed using the `React Native` framework.
