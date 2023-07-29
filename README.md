@@ -1,6 +1,8 @@
 # Escape [Music Player Application]
 
-![Webpage 1](demonstration/Video1.mp4)
+https://github.com/Hassanj34/smd-project/assets/96651621/ca5df1f5-7470-491a-bc55-36f8ebb971c9
+###Signup
+https://github.com/Hassanj34/smd-project/assets/96651621/9ca490f4-cc36-47d6-ba42-ab8d73f9057a
 
 ## Introduction
 Escape is a music player application having the complete set of basic features required by a music player with a user friendly UI.
